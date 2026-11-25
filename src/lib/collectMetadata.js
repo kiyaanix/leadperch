@@ -1,15 +1,13 @@
 /**
  * Client-side metadata collection.
  *
- * Two tiers:
- *  1. Free, instant, no network call: page URL, referrer, UA-derived
- *     browser/OS/device, screen size, timezone, language.
- *  2. Optional network call to an IP-geolocation service to attach
- *     ip/country/city. This is best-effort and can be disabled — the
- *     canonical, trustworthy IP capture should happen server-side by
- *     reading the request's IP at your `endpoint` (client-reported IP
- *     can be spoofed). We still offer it because many teams just want
- *     country-level context without standing up their own lookup.
+ * Free, instant, and no network call: page URL, referrer, UA-derived
+ * browser/OS/device, screen size, timezone, language.
+ *
+ * The widget deliberately makes no third-party requests. IP address and
+ * country must be determined server-side at your `endpoint` from the
+ * incoming request (the WordPress plugin does this) — anything the
+ * browser reports about them can be spoofed.
  */
 
 // ---- UA parsing (lightweight, dependency-free) ---------------------------
@@ -65,55 +63,4 @@ export function collectBasicMetadata() {
     screenHeight: typeof window !== "undefined" ? window.screen.height : null,
     submittedAt: new Date().toISOString(),
   };
-}
-
-const geoCache = { promise: null };
-
-/**
- * Best-effort IP/country lookup via a swappable third-party API.
- * Cached per page load so multiple submissions don't refetch.
- *
- * @param {object} opts
- * @param {boolean} opts.enabled - skip entirely if false (default true)
- * @param {string} opts.url - geolocation endpoint returning JSON
- * @param {(json:any) => {ip:string,country:string,countryCode:string,city:string}} opts.parse
- */
-export function collectGeoMetadata(opts = {}) {
-  const { enabled = true, url = "https://ipapi.co/json/", parse = defaultGeoParse } = opts;
-
-  if (!enabled) return Promise.resolve({});
-
-  if (!geoCache.promise) {
-    geoCache.promise = fetch(url)
-      .then((res) => {
-        if (!res.ok) throw new Error(`Geo lookup failed: ${res.status}`);
-        return res.json();
-      })
-      .then(parse)
-      .catch((err) => {
-        console.warn("[ChatWidget] IP/country lookup failed:", err.message);
-        return {};
-      });
-  }
-  return geoCache.promise;
-}
-
-function defaultGeoParse(json) {
-  return {
-    ip: json.ip || "",
-    country: json.country_name || "",
-    countryCode: json.country_code || "",
-    city: json.city || "",
-    region: json.region || "",
-  };
-}
-
-/**
- * Full metadata: basic (instant) + geo (async, best-effort).
- * Never rejects — geo failures resolve to {}.
- */
-export async function collectFullMetadata(geoOptions) {
-  const basic = collectBasicMetadata();
-  const geo = await collectGeoMetadata(geoOptions);
-  return { ...basic, ...geo };
 }

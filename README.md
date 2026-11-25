@@ -24,7 +24,7 @@ src/
   lib/
     defaultConfig.js       # default config + mergeConfig()
     buildSchema.js           # field config -> Zod schema
-    collectMetadata.js         # page URL, browser/OS, IP/country lookup
+    collectMetadata.js         # page URL, browser/OS, timezone (no network calls)
     widgetStyles.js               # CSS-in-JS string, scoped inside Shadow DOM
     mountWidget.js                  # Shadow DOM mount + window.kiyaanix_cwc_widget API
   embed.js                            # entry point for the distributable build
@@ -130,7 +130,7 @@ To add a new field type, add matching cases in both `FieldRenderer.jsx`
 (how it renders) and `buildSchema.js` (how it validates) — they're kept as
 two small, parallel switch statements rather than one large file.
 
-## Metadata collection (page URL, browser, IP/country)
+## Metadata collection (page URL, browser)
 
 On every successful submit, `ChatForm.jsx` attaches a `meta` object to the
 payload, built in `lib/collectMetadata.js`:
@@ -141,46 +141,27 @@ payload.meta = {
   pageUrl, pageTitle, referrer,
   browserName, browserVersion, os, deviceType, userAgent,
   language, timezone, screenWidth, screenHeight, submittedAt,
-
-  // Best-effort, one network call to a geolocation API (cached per page load):
-  ip, country, countryCode, city, region,
 }
 ```
 
-Toggle each tier independently in config:
+Turn it off entirely with:
 
 ```js
 window.kiyaanix_cwc_config = {
   // ...
   metadata: {
-    collectBasic: true,   // page url / browser / OS / timezone etc — free
-    collectGeo: true,      // IP/country lookup — one network call
-    geoApiUrl: "https://ipapi.co/json/", // swap for any provider
-    parseGeoResponse: (json) => ({       // adapt to that provider's shape
-      ip: json.ip,
-      country: json.country_name,
-      countryCode: json.country_code,
-      city: json.city,
-    }),
+    collectBasic: false,
   },
 };
 ```
 
-**Important caveat on IP address:** the client-reported IP from a
-third-party geolocation API is convenient but not authoritative — a
-browser extension, VPN, or proxy changes what it sees, and a malicious
-client could fake the payload before it ever hits your server. If country
-data feeds anything security- or compliance-sensitive, read the real IP
-server-side from the incoming request headers at your `endpoint` (e.g.
-`req.headers['x-forwarded-for']` behind a proxy, or `req.socket.remoteAddress`
-directly) instead of trusting `payload.meta.ip`. The client-side lookup
-here is best-effort context for support/sales triage, not a security
-control.
-
-The default provider is `ipapi.co`'s free JSON endpoint (rate-limited,
-no key required for light use) — swap `geoApiUrl`/`parseGeoResponse` for
-ipinfo.io, ipgeolocation.io, or your own backend proxy if you need higher
-volume or a paid tier.
+**No IP address or country lookup happens in the browser.** The widget
+makes no third-party requests. Determine the visitor's IP (and, if you need
+it, country) server-side at your `endpoint` from the incoming request.
+The Chat Widget Connect WordPress plugin does this: it uses `REMOTE_ADDR`
+by default, trusts proxy headers only when the site owner says the site is
+behind Cloudflare or a load balancer, and reads the country from the CDN's
+country header when one is available.
 
 ## Teaser bubble
 
@@ -314,9 +295,6 @@ window.kiyaanix_cwc_config = {
 
   metadata: {
     collectBasic: true,
-    collectGeo: true,
-    geoApiUrl: "https://ipapi.co/json/",
-    parseGeoResponse: null,
   },
 };
 ```

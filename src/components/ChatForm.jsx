@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { FieldRenderer } from "./FieldRenderer.jsx";
 import { buildSchemaFromFields } from "../lib/buildSchema.js";
-import { collectBasicMetadata, collectGeoMetadata } from "../lib/collectMetadata.js";
+import { collectBasicMetadata } from "../lib/collectMetadata.js";
 
 export const STATUS = { IDLE: "idle", SUBMITTING: "submitting", SUCCESS: "success", ERROR: "error" };
 
@@ -65,20 +65,14 @@ export function ChatForm({ config, initialCooldownSeconds = 0, onSuccess }) {
       }
       setFieldErrors({});
 
-      // Collect page/browser metadata (instant) + best-effort geo (async).
+      // Page/browser metadata only (instant, no network call). IP and
+      // country are determined server-side from the request.
       const basicMeta = config.metadata.collectBasic ? collectBasicMetadata() : {};
-      const geoMeta = config.metadata.collectGeo
-        ? await collectGeoMetadata({
-            enabled: true,
-            url: config.metadata.geoApiUrl,
-            parse: config.metadata.parseGeoResponse || undefined,
-          })
-        : {};
 
       let payload = {
         ...config.extraPayload,
         ...result.data,
-        meta: { ...basicMeta, ...geoMeta },
+        meta: basicMeta,
       };
       if (typeof config.transformPayload === "function") {
         payload = config.transformPayload(payload);

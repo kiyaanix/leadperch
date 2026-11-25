@@ -72,13 +72,8 @@ export const defaultConfig = {
     // Instant, free, no network call: page URL, referrer, UA-derived
     // browser/OS/device, timezone, language, screen size.
     collectBasic: true,
-    // Best-effort client-side IP/country lookup via a third-party API.
-    // NOTE: for authoritative IP capture, read the request IP server-side
-    // at your `endpoint` instead of trusting the client-reported value.
-    collectGeo: true,
-    geoApiUrl: "https://ipapi.co/json/",
-    // Custom parser if you swap geoApiUrl for a different provider's shape.
-    parseGeoResponse: null,
+    // No IP/country lookup here on purpose: the widget makes no
+    // third-party requests. Determine IP/country server-side.
   },
 
   // ---- Callbacks (set programmatically) ----------------------------------------
