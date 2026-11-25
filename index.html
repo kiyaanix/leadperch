@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chat Widget — Dev Playground</title>
+  <style>
+    body { font-family: Georgia, serif; margin: 0; padding: 60px; background: #fafaf7; color: #222; }
+    .card { background: white; border: 1px solid #ddd; padding: 24px; max-width: 620px; }
+    button { margin: 6px 6px 0 0; padding: 8px 14px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Chat Widget — Dev Playground</h1>
+  <p>This host page mimics a real site (serif font, unrelated button styles) to confirm shadow-DOM isolation. Edit files in <code>src/</code> — Vite HMR reloads instantly.</p>
+
+  <div class="card">
+    <button onclick="kiyaanix_cwc_widget.open()">Open</button>
+    <button onclick="kiyaanix_cwc_widget.close()">Close</button>
+    <button onclick="kiyaanix_cwc_widget.configure({ theme: { accentColor: '#e11d48', bubbleColor: '#e11d48' } })">Red theme</button>
+    <button onclick="kiyaanix_cwc_widget.destroy()">Destroy</button>
+    <button onclick="kiyaanix_cwc_widget.init(window.kiyaanix_cwc_config)">Re-init</button>
+  </div>
+
+  <script type="module" src="/src/dev-main.js"></script>
+</body>
+</html>

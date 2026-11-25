@@ -1,0 +1,36 @@
+# Dependencies (restored with `npm ci` from package-lock.json)
+node_modules/
+
+# Build output — regenerate with `npm run build:embed`, then copy
+# dist-embed/chat-widget.js into the plugin's assets/ folder.
+dist/
+dist-embed/
+
+# Stale build artifact from an earlier build; not source.
+/chat-widget.js
+
+# Internal notes for AI coding agents (kept private).
+AGENTS.md
+
+# Environment / local config
+.env
+.env.*
+*.local
+
+# Logs and caches
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.log
+.vite/
+.cache/
+coverage/
+
+# Editor / OS files
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
