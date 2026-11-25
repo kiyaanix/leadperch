@@ -1,4 +1,4 @@
-# Chat Widget Connect
+# LeadPerch widget
 
 A floating chat bubble + popup contact form. Built as small React
 components, validated with **Zod**, bundled by **Vite** into one
@@ -158,7 +158,7 @@ window.kiyaanix_cwc_config = {
 **No IP address or country lookup happens in the browser.** The widget
 makes no third-party requests. Determine the visitor's IP (and, if you need
 it, country) server-side at your `endpoint` from the incoming request.
-The Chat Widget Connect WordPress plugin does this: it uses `REMOTE_ADDR`
+The LeadPerch WordPress plugin does this: it uses `REMOTE_ADDR`
 by default, trusts proxy headers only when the site owner says the site is
 behind Cloudflare or a load balancer, and reads the country from the CDN's
 country header when one is available.
@@ -337,7 +337,7 @@ unless you want to track Vite's next minor for the fix.
 
 Copyright (C) 2026 Kiyaanix Team.
 
-This widget is part of the [Chat Widget Connect](https://kiyaanix.com)
+This widget is part of the [LeadPerch](https://kiyaanix.com)
 WordPress plugin and is released under the **GNU General Public License
 v2.0 or later** (GPL-2.0-or-later). See [LICENSE](LICENSE) for the full text.
 

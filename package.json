@@ -1,7 +1,7 @@
 {
-  "name": "chat-widget-connect",
+  "name": "leadperch",
   "version": "1.0.3",
-  "description": "Source for the floating chat-style contact widget bundled in the Chat Widget Connect WordPress plugin.",
+  "description": "Source for the floating chat-style contact widget bundled in the LeadPerch WordPress plugin.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -18,13 +18,13 @@
   ],
   "author": "Kiyaanix Team (https://kiyaanix.com)",
   "license": "GPL-2.0-or-later",
-  "homepage": "https://github.com/kiyaanix/chat-widget-connect#readme",
+  "homepage": "https://github.com/kiyaanix/leadperch#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kiyaanix/chat-widget-connect.git"
+    "url": "git+https://github.com/kiyaanix/leadperch.git"
   },
   "bugs": {
-    "url": "https://github.com/kiyaanix/chat-widget-connect/issues"
+    "url": "https://github.com/kiyaanix/leadperch/issues"
   },
   "private": true,
   "dependencies": {

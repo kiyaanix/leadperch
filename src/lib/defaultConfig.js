@@ -6,7 +6,7 @@ export const defaultConfig = {
   // Small dismissable card shown above the bubble before the panel is
   // opened (see image 1). Set to "" or null to disable it entirely.
   teaserMessage: "Hi there! Have a question? Leave your details and we'll get right back to you.",
-  poweredByText: "Powered by Chat Widget Connect",
+  poweredByText: "Powered by LeadPerch",
   poweredByUrl: "",
   logoUrl: "",
   bannerImageUrl: "",
