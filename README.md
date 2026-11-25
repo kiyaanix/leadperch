@@ -1,4 +1,4 @@
-# Embeddable Chat Bubble Widget
+# Chat Widget Connect
 
 A floating chat bubble + popup contact form. Built as small React
 components, validated with **Zod**, bundled by **Vite** into one
@@ -355,3 +355,14 @@ esbuild dev server (GHSA-67mh-4wv8-2f99) — it only affects the local dev
 server's handling of cross-origin requests during `npm run dev`, not the
 production `dist-embed/chat-widget.js` output, so it's safe to leave as-is
 unless you want to track Vite's next minor for the fix.
+## License
+
+Copyright (C) 2026 Kiyaanix Team.
+
+This widget is part of the [Chat Widget Connect](https://kiyaanix.com)
+WordPress plugin and is released under the **GNU General Public License
+v2.0 or later** (GPL-2.0-or-later). See [LICENSE](LICENSE) for the full text.
+
+The built bundle includes these third-party libraries, each under the MIT
+license: [React and React DOM](https://github.com/facebook/react) and
+[Zod](https://github.com/colinhacks/zod).
